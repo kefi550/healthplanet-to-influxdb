@@ -1,0 +1,61 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: healthplanet-to-influxdb
+spec:
+  schedule: "0 16 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: healthplanet-to-influxdb
+              image: kefi550/healthplanet-to-influxdb:v0.1.0
+              env:
+                - name: HEALTHPLANET_CLIENT_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: healthplanet-to-influxdb
+                      key: HEALTHPLANET_CLIENT_ID
+                - name: HEALTHPLANET_CLIENT_SECRET
+                  valueFrom:
+                    secretKeyRef:
+                      name: healthplanet-to-influxdb
+                      key: HEALTHPLANET_CLIENT_SECRET
+                - name: HEALTHPLANET_LOGIN_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: healthplanet-to-influxdb
+                      key: HEALTHPLANET_LOGIN_ID
+                - name: HEALTHPLANET_LOGIN_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: healthplanet-to-influxdb
+                      key: HEALTHPLANET_LOGIN_PASSWORD
+                - name: INFLUXDB_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: healthplanet-to-influxdb
+                      key: INFLUXDB_URL
+                - name: INFLUXDB_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: healthplanet-to-influxdb
+                      key: INFLUXDB_TOKEN
+                - name: INFLUXDB_ORG
+                  valueFrom:
+                    secretKeyRef:
+                      name: healthplanet-to-influxdb
+                      key: INFLUXDB_ORG
+                - name: INFLUXDB_BUCKET
+                  valueFrom:
+                    secretKeyRef:
+                      name: healthplanet-to-influxdb
+                      key: INFLUXDB_BUCKET
+                - name: INFLUXDB_MEASUREMENT
+                  valueFrom:
+                    secretKeyRef:
+                      name: healthplanet-to-influxdb
+                      key: INFLUXDB_MEASUREMENT
+              imagePullPolicy: Always
