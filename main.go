@@ -1,14 +1,15 @@
 package main
 
 import (
-       "fmt"
-       "log"
-       "os"
-       "strconv"
-       "time"
+	"context"
+	"fmt"
+	"log"
+	"os"
+	"strconv"
+	"time"
 
-       "github.com/kefi550/go-healthplanet"
-	   "github.com/kefi550/healthplanet-to-influxdb"
+	"github.com/influxdata/influxdb-client-go/v2"
+	"github.com/kefi550/go-healthplanet"
 )
 
 var (
@@ -23,6 +24,24 @@ var (
        influxdbBucket = os.Getenv("INFLUXDB_BUCKET")
        influxdbMeasurement = os.Getenv("INFLUXDB_MEASUREMENT")
 )
+
+func WriteInfluxDB(host, token, org, bucket, measurement string, tag string, value float64, t time.Time) error {
+	client := influxdb2.NewClient(host, token)
+	writeAPI := client.WriteAPIBlocking(org, bucket)
+
+	fmt.Println(t)
+
+	p := influxdb2.NewPointWithMeasurement(measurement).
+		AddTag("tag", tag).
+		AddField("field", value).
+		SetTime(t)
+	err := writeAPI.WritePoint(context.Background(), p)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
 
 func main() {
        hp := healthplanet.NewClient(
@@ -67,7 +86,7 @@ func main() {
                }
                timeJst, _ := time.ParseInLocation("200601021504", data.Date, jst)
                value, _ := strconv.ParseFloat(data.KeyData, 64)
-               err = hp2influxdb.WriteInfluxDB(influxdbUrl, influxdbToken, influxdbOrg, influxdbBucket, influxdbMeasurement, tag, value, timeJst)
+               err = WriteInfluxDB(influxdbUrl, influxdbToken, influxdbOrg, influxdbBucket, influxdbMeasurement, tag, value, timeJst)
                if err != nil {
                        log.Fatal(err)
                }
