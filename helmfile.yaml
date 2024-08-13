@@ -1,0 +1,10 @@
+repositories:
+  - name: sealed-secrets
+    url: https://bitnami-labs.github.io/sealed-secrets
+
+releases:
+  - name: sealed-secrets
+    namespace: kube-system
+    chart: sealed-secrets/sealed-secrets
+    values:
+      - fullnameOverride: sealed-secrets-controller
