@@ -2,6 +2,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: healthplanet-to-influxdb
+  namespace: healthplanet
 spec:
   schedule: "0 16 * * *"
   jobTemplate:
@@ -34,28 +35,16 @@ spec:
                       name: healthplanet-to-influxdb
                       key: HEALTHPLANET_LOGIN_PASSWORD
                 - name: INFLUXDB_URL
-                  valueFrom:
-                    secretKeyRef:
-                      name: healthplanet-to-influxdb
-                      key: INFLUXDB_URL
+                  value: http://influxdb2.influxdb
                 - name: INFLUXDB_TOKEN
                   valueFrom:
                     secretKeyRef:
                       name: healthplanet-to-influxdb
                       key: INFLUXDB_TOKEN
                 - name: INFLUXDB_ORG
-                  valueFrom:
-                    secretKeyRef:
-                      name: healthplanet-to-influxdb
-                      key: INFLUXDB_ORG
+                  value: influxdata
                 - name: INFLUXDB_BUCKET
-                  valueFrom:
-                    secretKeyRef:
-                      name: healthplanet-to-influxdb
-                      key: INFLUXDB_BUCKET
+                  value: healthplanet
                 - name: INFLUXDB_MEASUREMENT
-                  valueFrom:
-                    secretKeyRef:
-                      name: healthplanet-to-influxdb
-                      key: INFLUXDB_MEASUREMENT
+                  value: healthplanet
               imagePullPolicy: Always
