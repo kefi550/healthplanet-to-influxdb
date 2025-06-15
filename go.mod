@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/influxdata/influxdb-client-go/v2 v2.13.0
-	github.com/kefi550/go-healthplanet v0.0.0-20240808163252-ade0a611d599
+	github.com/kefi550/go-healthplanet v0.0.3
 )
 
 require (
