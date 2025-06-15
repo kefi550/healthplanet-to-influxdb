@@ -12,7 +12,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: healthplanet-to-influxdb
-              image: kefi550/healthplanet-to-influxdb:v0.1.0
+              image: kefi550/healthplanet-to-influxdb:v0.1.1
               env:
                 - name: HEALTHPLANET_CLIENT_ID
                   valueFrom:
